@@ -1,6 +1,8 @@
 import React from 'react';
+import { useSearchUsersQuery } from '../store/github/github.api';
 
-const homePage = () => {
+const HomePage = () => {
+  const {isLoading, isError, data} = useSearchUsersQuery('Avtandil03')
   return (
     <div>
         home
@@ -8,4 +10,4 @@ const homePage = () => {
   );
 };
 
-export default homePage;
+export default HomePage;
