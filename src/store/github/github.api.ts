@@ -9,7 +9,9 @@ export const githubApi = createApi({
     searchUsers: build.query<any, string>({
       query: (search: string) => ({
         url: 'search/users',
-        q: search
+        params: {
+          q: search
+        }
       })
     })
   })
