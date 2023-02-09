@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ServerResponse, IUser } from '../../models/models'
+import { ServerResponse, IUser, IRepo } from '../../models/models'
 
 export const githubApi = createApi({
   reducerPath: 'github/api',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com/'
   }),
+  refetchOnFocus: true,
   endpoints: build => ({
     searchUsers: build.query<IUser[], string>({
       query: (search: string) => ({
@@ -16,9 +17,14 @@ export const githubApi = createApi({
         }
       }),
       transformResponse:(response: ServerResponse<IUser>) => response.items
+    }),
+    getUserRepos: build.query<IRepo[], string> ({
+      query: (username: string) => ({
+        url: `users/${username}/repos`
+      })
     })
   })
 })
 
-export const {useSearchUsersQuery} = githubApi
+export const {useSearchUsersQuery, useLazyGetUserReposQuery} = githubApi
 
