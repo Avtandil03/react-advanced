@@ -1,12 +1,21 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { IRepo } from "../models/models";
 import { useActions } from "../hooks/actions";
+import { useAppSelector } from "../hooks/redux";
 
 export function RepoCard({ repo }: { repo: IRepo }) {
 
+  const { favorites } = useAppSelector((state) => state.github);
   const {addFavorite, removeFavorite} = useActions()
-
   const [isFav, setIsFav] = useState(false)
+
+  useEffect(() => {
+    favorites.forEach((e: string) => {
+      if(e === repo.html_url){
+        setIsFav(true)
+      }
+    })
+  }, [])
 
   const addToFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
