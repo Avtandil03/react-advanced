@@ -1,7 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import { IRepo } from "../models/models";
+import { useActions } from "../hooks/actions";
 
 export function RepoCard({ repo }: { repo: IRepo }) {
+
+  const {addFavorite, removeFavorite} = useActions()
+
+  const [isFav, setIsFav] = useState(false)
+
+  const addToFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    addFavorite(repo.html_url)
+    setIsFav(true)
+  }
+
+  const removeFromFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    removeFavorite(repo.html_url)
+    setIsFav(false)
+  }
+
   return (
     <div className="border py-3 px-5 rounded md-2 hover:shadow-mb hover:bg-gray-100 transition-all">
       <a href={repo.html_url} target="_blank">
@@ -11,6 +29,18 @@ export function RepoCard({ repo }: { repo: IRepo }) {
           Watchers: <span className="font-bold">{repo.watchers}</span>
         </p>
         <p className="text-sm font-thin">{repo?.description}</p>
+        {!isFav && (
+          <button
+            className="py-1 px-2 bg-yellow-400 mr-2 rounded hover:shadow-md transiton-all"
+            onClick={addToFavorite}
+          >add</button>
+        )}
+        {isFav && (
+          <button
+            className="py-1 px-2 bg-red-400 rounded hover:shadow-md transiton-all"
+            onClick={removeFromFavorite}
+          >remove</button>
+        )}
       </a>
     </div>
   );
